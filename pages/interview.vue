@@ -110,6 +110,8 @@
 </template>
 
 <script setup>
+import { useSessionStore } from "~/stores/session";
+
 const sessionStore = useSessionStore();
 const { getStakeholderResponse } = useGemini();
 const currentQuestion = ref("");
@@ -147,7 +149,8 @@ const askQuestion = async () => {
       sessionStore.scenario
     );
 
-    // Add Q&A to history    sessionStore.addQA(question, answer);
+    // Add Q&A to history
+    sessionStore.addQA(question, answer);
   } catch (error) {
     // Add fallback response
     sessionStore.addQA(

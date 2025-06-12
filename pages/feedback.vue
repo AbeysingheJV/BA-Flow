@@ -118,6 +118,8 @@
 </template>
 
 <script setup>
+import { useSessionStore } from "~/stores/session";
+
 const sessionStore = useSessionStore();
 const { generateFeedback } = useGemini();
 const isGeneratingFeedback = ref(false);

@@ -31,6 +31,8 @@
 </template>
 
 <script setup>
+import { useSessionStore } from "~/stores/session";
+
 const sessionStore = useSessionStore();
 const { generateScenario } = useGemini();
 const isGenerating = ref(false);

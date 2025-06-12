@@ -52,6 +52,8 @@
 </template>
 
 <script setup>
+import { useSessionStore } from "~/stores/session";
+
 const sessionStore = useSessionStore();
 
 const formatScenario = (text) => {
