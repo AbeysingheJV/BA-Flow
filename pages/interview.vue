@@ -74,6 +74,7 @@
 
 <script setup>
 const sessionStore = useSessionStore();
+const { getStakeholderResponse } = useGemini();
 const currentQuestion = ref("");
 const isLoading = ref(false);
 
@@ -85,11 +86,21 @@ const askQuestion = async () => {
   currentQuestion.value = "";
 
   try {
-    // Add question to history immediately
-    // We'll implement AI response in Phase 4
-    sessionStore.addQA(question, "AI response will be implemented in Phase 4");
+    // Get AI response
+    const answer = await getStakeholderResponse(
+      question,
+      sessionStore.scenario
+    );
+
+    // Add Q&A to history
+    sessionStore.addQA(question, answer);
   } catch (error) {
     console.error("Error asking question:", error);
+    // Add fallback response
+    sessionStore.addQA(
+      question,
+      "Sorry, I encountered an error. Please try again."
+    );
   } finally {
     isLoading.value = false;
   }
@@ -97,16 +108,13 @@ const askQuestion = async () => {
 
 const endConversation = async () => {
   // Navigate to feedback page
-  await $router.push("/feedback");
+  await navigateTo("/feedback");
 };
 
 // Check if we have a scenario, if not redirect to landing
 onMounted(() => {
   if (!sessionStore.scenario) {
-    // For now, set a placeholder scenario
-    sessionStore.setScenario(
-      "Placeholder scenario - will be generated in Phase 4"
-    );
+    navigateTo("/");
   }
 });
 </script>

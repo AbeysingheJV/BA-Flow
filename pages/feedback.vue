@@ -37,9 +37,18 @@
             </div>
           </div>
         </div>
+        <div v-if="isGeneratingFeedback" class="text-center text-gray-500">
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"
+          ></div>
+          Generating feedback...
+        </div>
 
-        <div v-else class="text-center text-gray-500">
-          No feedback available. Feedback will be generated in Phase 4.
+        <div
+          v-else-if="!sessionStore.feedback"
+          class="text-center text-gray-500"
+        >
+          No feedback available.
         </div>
       </div>
 
@@ -110,20 +119,39 @@
 
 <script setup>
 const sessionStore = useSessionStore();
+const { generateFeedback } = useGemini();
+const isGeneratingFeedback = ref(false);
 
 const startNewSession = async () => {
   sessionStore.resetSession();
-  await $router.push("/");
+  await navigateTo("/");
 };
 
 const goHome = async () => {
-  await $router.push("/");
+  await navigateTo("/");
 };
 
-// Check if we have QA history, if not redirect to landing
-onMounted(() => {
+// Generate feedback when component mounts
+onMounted(async () => {
   if (sessionStore.qaHistory.length === 0) {
-    $router.push("/");
+    navigateTo("/");
+    return;
+  }
+
+  // Generate feedback if not already generated
+  if (!sessionStore.feedback) {
+    isGeneratingFeedback.value = true;
+    try {
+      const feedback = await generateFeedback(
+        sessionStore.scenario,
+        sessionStore.qaHistory
+      );
+      sessionStore.setFeedback(feedback);
+    } catch (error) {
+      console.error("Error generating feedback:", error);
+    } finally {
+      isGeneratingFeedback.value = false;
+    }
   }
 });
 </script>

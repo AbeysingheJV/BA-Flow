@@ -32,6 +32,7 @@
 
 <script setup>
 const sessionStore = useSessionStore();
+const { generateScenario } = useGemini();
 const isGenerating = ref(false);
 
 const startNewSession = async () => {
@@ -41,11 +42,14 @@ const startNewSession = async () => {
     // Reset any previous session
     sessionStore.resetSession();
 
-    // Generate new scenario (we'll implement this in Phase 4)
-    // For now, just navigate to interview page
-    await $router.push("/interview");
+    // Generate new scenario
+    const scenario = await generateScenario();
+    sessionStore.setScenario(scenario); // Navigate to interview page
+    await navigateTo("/interview");
   } catch (error) {
     console.error("Error starting session:", error);
+    // Still navigate even if scenario generation fails
+    await navigateTo("/interview");
   } finally {
     isGenerating.value = false;
   }
