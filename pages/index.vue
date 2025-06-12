@@ -44,12 +44,12 @@ const startNewSession = async () => {
 
     // Generate new scenario
     const scenario = await generateScenario();
-    sessionStore.setScenario(scenario); // Navigate to interview page
-    await navigateTo("/interview");
+    sessionStore.setScenario(scenario); // Navigate to scenario page
+    await navigateTo("/scenario");
   } catch (error) {
     console.error("Error starting session:", error);
     // Still navigate even if scenario generation fails
-    await navigateTo("/interview");
+    await navigateTo("/scenario");
   } finally {
     isGenerating.value = false;
   }
