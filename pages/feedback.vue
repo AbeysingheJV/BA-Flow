@@ -148,7 +148,7 @@ onMounted(async () => {
       );
       sessionStore.setFeedback(feedback);
     } catch (error) {
-      console.error("Error generating feedback:", error);
+      // Silently handle error - fallback feedback will be used
     } finally {
       isGeneratingFeedback.value = false;
     }

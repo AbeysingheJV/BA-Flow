@@ -47,7 +47,6 @@ const startNewSession = async () => {
     sessionStore.setScenario(scenario); // Navigate to scenario page
     await navigateTo("/scenario");
   } catch (error) {
-    console.error("Error starting session:", error);
     // Still navigate even if scenario generation fails
     await navigateTo("/scenario");
   } finally {

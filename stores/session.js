@@ -9,6 +9,7 @@ export const useSessionStore = defineStore("session", () => {
   const setScenario = (scenarioData) => {
     scenario.value = scenarioData;
   };
+
   const addQA = (question, answer) => {
     qaHistory.value.push({
       question,
@@ -25,7 +26,6 @@ export const useSessionStore = defineStore("session", () => {
     qaHistory.value = [];
     feedback.value = null;
   };
-
   return {
     // State
     scenario,

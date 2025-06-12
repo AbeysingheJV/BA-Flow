@@ -147,10 +147,8 @@ const askQuestion = async () => {
       sessionStore.scenario
     );
 
-    // Add Q&A to history
-    sessionStore.addQA(question, answer);
+    // Add Q&A to history    sessionStore.addQA(question, answer);
   } catch (error) {
-    console.error("Error asking question:", error);
     // Add fallback response
     sessionStore.addQA(
       question,

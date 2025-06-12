@@ -4,9 +4,9 @@ export const useGemini = () => {
   const config = useRuntimeConfig();
   const genAI = new GoogleGenerativeAI(config.public.geminiApiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
   // 1. Scenario Generation
   const generateScenario = async () => {
-    console.log("🎯 Starting scenario generation...");
     const prompt = `You are an AI assistant designed to help train junior Business Analysts in tech companies. Generate a business analysis scenario that includes:
     - A stakeholder role (e.g., Marketing Director, Product Manager)
     - A brief company background
@@ -16,13 +16,11 @@ export const useGemini = () => {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
-    console.log("✅ Scenario generated:", text.substring(0, 100) + "...");
-    return text;
+    return response.text();
   };
+
   // 2. Stakeholder Roleplay
   const getStakeholderResponse = async (question, scenario) => {
-    console.log("💬 Getting stakeholder response for:", question);
     const prompt = `Respond in character as the stakeholder described in the scenario. Give clear, informative answers based on your fictional role, and answer only what the user asks. Keep answers concise and simple to understand unless the question is open-ended.
 
 Scenario: ${scenario}
@@ -31,13 +29,11 @@ User question: ${question}`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
-    console.log("✅ Stakeholder response:", text.substring(0, 100) + "...");
-    return text;
+    return response.text();
   };
+
   // 3. Feedback Evaluation
   const generateFeedback = async (scenario, qaHistory) => {
-    console.log("📊 Generating feedback for", qaHistory.length, "Q&A pairs...");
     const conversationText = qaHistory
       .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
       .join("\n\n");
@@ -68,10 +64,10 @@ Please provide feedback in the following JSON format:
     "missed question type 2"
   ]
 }`;
+
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    console.log("📝 Raw feedback response:", text);
 
     // Clean the response - remove markdown code blocks and extra whitespace
     const cleanedText = text
@@ -79,16 +75,10 @@ Please provide feedback in the following JSON format:
       .replace(/```\s*/g, "")
       .trim();
 
-    console.log("🧹 Cleaned text for parsing:", cleanedText);
-
     // Parse JSON response
     try {
-      const feedback = JSON.parse(cleanedText);
-      console.log("✅ Feedback parsed successfully:", feedback);
-      return feedback;
+      return JSON.parse(cleanedText);
     } catch (error) {
-      console.error("❌ Failed to parse feedback JSON:", error);
-      console.log("Raw text that failed to parse:", cleanedText);
       // Return fallback structure
       return {
         scores: {

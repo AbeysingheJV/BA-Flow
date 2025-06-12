@@ -1,75 +1,74 @@
-# Nuxt Minimal Starter
+# BA-Flow
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A Nuxt 3 application that allows junior Business Analysts to simulate stakeholder interviews by asking questions to an AI-powered client and receive feedback on the quality and structure of their questioning.
+
+## Features
+
+- **Scenario Generation**: AI generates realistic business analysis scenarios
+- **Interview Simulation**: Interactive chat interface with AI stakeholder responses
+- **Feedback Report**: Post-interview evaluation with scores and improvement suggestions
+- **Session Management**: In-memory session persistence using Pinia
+
+## Tech Stack
+
+- **Nuxt 3** - Full-stack Vue.js framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **Pinia** - State management for Vue
+- **Gemini API** - AI-powered interactions
 
 ## Setup
 
-Make sure to install dependencies:
+### Prerequisites
+
+- Node.js 18+
+- Google Gemini API key
+
+### Installation
+
+1. Install dependencies:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+2. Create a `.env` file in the root directory and add your Gemini API key:
 
 ```bash
-# npm
+GEMINI_API_KEY=your-google-api-key
+```
+
+3. Start the development server:
+
+```bash
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+The application will be available at `http://localhost:3000`
 
-Build the application for production:
+## Usage
 
-```bash
-# npm
-npm run build
+1. **Landing Page**: Click "Start New Interview Session" to begin
+2. **Scenario Page**: Review the AI-generated business scenario
+3. **Interview Page**: Ask questions to the AI stakeholder and build conversation
+4. **Feedback Page**: View performance analysis with scores and suggestions
 
-# pnpm
-pnpm build
+## Project Structure
 
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+├── pages/
+│   ├── index.vue          # Landing page
+│   ├── scenario.vue       # Generated scenario display
+│   ├── interview.vue      # Chat interface
+│   └── feedback.vue       # Performance feedback
+├── stores/
+│   └── session.js         # Pinia session store
+├── composables/
+│   └── useGemini.js       # Gemini API integration
+└── nuxt.config.ts         # Nuxt configuration
 ```
 
-Locally preview production build:
+## Development Notes
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Development only - not intended for production deployment
+- Uses Gemini 2.0 Flash model (free tier)
+- All session data is stored in-memory only
